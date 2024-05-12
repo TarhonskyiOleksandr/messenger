@@ -1,8 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
+import path from 'path';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   plugins: [
     svgr(),
     react(),
@@ -10,13 +16,4 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  resolve: {
-    alias: {
-      components: "/src/components",
-      assets: "/src/assets",
-      pages: "/src/views",
-      hooks: "/src/hooks",
-      store: "/src/store",
-    },
-  }
 });

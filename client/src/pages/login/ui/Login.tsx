@@ -3,14 +3,14 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { api } from '../api';
+import { api } from '@/shared/api';
 
 interface ILogin {
   email: string;
   password: string;
 }
 
-const Login: React.FC = () => {
+export const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -29,11 +29,14 @@ const Login: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto mt-8 p-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="max-w-md mx-auto mt-8 p-6"
+      autoComplete="false"
+    >
       <h1 className="mb-8">
         Sign in
       </h1>
-
       <div className="mb-4">
         <label htmlFor="email">
           Email
@@ -64,6 +67,7 @@ const Login: React.FC = () => {
           {...register('password', { required: 'This field is required' })}
           id="password"
           type="password"
+          autoComplete="new-password"
         />
         {
           errors.password &&
@@ -93,5 +97,3 @@ const Login: React.FC = () => {
     </form>
   );
 };
-
-export default Login;

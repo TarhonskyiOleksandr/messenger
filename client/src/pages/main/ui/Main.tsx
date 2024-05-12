@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Dashboard: React.FC = () => {
+export const Main: React.FC = () => {
   return (
     <div>
 
@@ -8,4 +8,3 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
