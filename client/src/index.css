@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+
+@layer components {
+  h1 {
+    @apply text-2xl text-gray-700;
+  }
+
+  label {
+    @apply block text-gray-500 text-sm font-semibold mb-2;
+  }
+
+  input:not([type="checkbox"]),
+  textarea {
+    @apply w-full text-gray-500 font-semibold border-2 border-gray-400 rounded-3xl py-2 px-4 focus:border-violet-500 focus:shadow-md;
+  }
+
+  .btn {
+    @apply py-2 px-4 rounded-3xl font-semibold;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-2 px-4 rounded-3xl font-light hover:shadow-lg;
+  }
+
+  .validation-error {
+    @apply text-red-500 text-xs font-semibold mt-1;
+  }
+}
+
+.mobile-menu {
+  @apply max-h-0 overflow-hidden transition-all duration-500 ease-out opacity-0;
+}
+
+.mobile-menu.open {
+  @apply max-h-screen opacity-100;
+}
+
+.mobile-open {
+  @apply overflow-hidden;
+}
