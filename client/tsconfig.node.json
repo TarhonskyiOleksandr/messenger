@@ -2,17 +2,9 @@
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true,
-    "outDir": "./public",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
-  "baseUrl": "./",
-  "paths": {
-    "@/*": ["src/*"]
-  },
-  "include": ["src"],
-  "references": [{
-    "path": "./tsconfig.node.json"
-  }]
+  "include": ["vite.config.ts"]
 }
