@@ -44,16 +44,10 @@ const Navbar: React.FC = () => {
         </div>
         <div className="hidden lg:flex items-center">
           <Link
-            to="/"
+            to="/settings"
             className="text-white hover:text-violet-500 font-semibold mr-8"
           >
-            About
-          </Link>
-          <Link
-            to="/"
-            className="text-white hover:text-violet-500 font-semibold mr-8"
-          >
-            News
+            Settings
           </Link>
           <button
             className="btn border-white border-2 text-white"
