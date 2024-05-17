@@ -14,6 +14,10 @@ const UserShema = new Schema({
     type: String,
     required: true,
   },
+  constacts: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Contact',
+  }],
   createdAt: {
     type: Date,
     default: Date.now,

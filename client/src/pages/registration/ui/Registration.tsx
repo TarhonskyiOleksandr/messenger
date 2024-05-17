@@ -4,17 +4,10 @@ import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { api } from '../api';
+import { api } from '@/shared/api';
+import { IRegisterForm } from '../types';
 
-interface IRegisterForm {
-  userName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  agreeTerms: boolean;
-}
-
-const Registration: React.FC = () => {
+export const Registration: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -158,5 +151,3 @@ const Registration: React.FC = () => {
     </form>
   );
 };
-
-export default Registration;

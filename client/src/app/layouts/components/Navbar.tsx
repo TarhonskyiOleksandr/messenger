@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { api } from '../../api';
+import { api } from '../../../shared/api'
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className={`bg-gray-800 p-4 ${isOpen ? 'mobile-open' : ''}`}>
+    <nav className={`bg-gray-900 p-4 ${isOpen ? 'mobile-open' : ''}`}>
       <div className="container mx-auto flex items-center justify-between">
         <div className="text-white text-lg font-semibold">
           Logo
@@ -44,16 +44,10 @@ const Navbar: React.FC = () => {
         </div>
         <div className="hidden lg:flex items-center">
           <Link
-            to="/"
+            to="/settings"
             className="text-white hover:text-violet-500 font-semibold mr-8"
           >
-            About
-          </Link>
-          <Link
-            to="/"
-            className="text-white hover:text-violet-500 font-semibold mr-8"
-          >
-            News
+            Settings
           </Link>
           <button
             className="btn border-white border-2 text-white"
