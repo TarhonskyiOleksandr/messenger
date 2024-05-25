@@ -27,10 +27,11 @@ export const Registration: React.FC = () => {
     }
   };
 
-  console.log(errors)
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto mt-8 p-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="max-w-md mx-auto mt-8 p-6"
+    >
       <h1 className="mb-8">
         Sign up
       </h1>

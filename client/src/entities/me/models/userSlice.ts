@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchMe } from './thunks';
+import {
+  fetchMe,
+  updateMe
+} from './thunks';
 
 const initialState: any = {
   loading: false,
@@ -19,10 +22,16 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchMe.rejected, (state, payload) => {
+        state.loading = false;
         state.error = payload;
       })
-      .addCase(fetchMe.fulfilled, (state, payload) => {
+      .addCase(fetchMe.fulfilled, (state, { payload }) => {
+        state.loading = false;
         state.data = payload;
+      })
+      .addCase(updateMe.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.data = payload.data;
       })
   },
 });
