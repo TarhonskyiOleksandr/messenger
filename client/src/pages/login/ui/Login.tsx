@@ -3,7 +3,8 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { api } from '@/shared/api';
+import { login } from '@/entities/me';
+import { useAppDispatch } from '@/shared/store';
 
 interface ILogin {
   email: string;
@@ -17,15 +18,10 @@ export const Login: React.FC = () => {
     formState: { errors }
   } = useForm<ILogin>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
-    try {
-      const res = await api.post('/user/login', data);
-      console.log(res);
-      navigate('/');
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(login(data)).then(() => navigate('/'));
   };
 
   return (

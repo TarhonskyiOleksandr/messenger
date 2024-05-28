@@ -18,10 +18,6 @@ const UserShema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Contact',
   }],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
 const User = mongoose.model('User', UserShema);

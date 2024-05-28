@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import {
   fetchMe,
+  login,
+  logout,
   updateMe
 } from './thunks';
 
@@ -21,7 +23,7 @@ export const userSlice = createSlice({
       .addCase(fetchMe.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchMe.rejected, (state, payload) => {
+      .addCase(fetchMe.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       })
@@ -32,6 +34,16 @@ export const userSlice = createSlice({
       .addCase(updateMe.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.data = payload.data;
+      })
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(login.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.data = payload.data;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.data = {};
       })
   },
 });

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import User from '../db/models/User';
-import { IAuthenticateRequest } from '../middlewares';
+import { IProtectedRequest } from '../type';
 
 export const register = async(req: Request, res: Response) => {
   const { email, userName, password } = req.body;
@@ -32,28 +32,41 @@ export const login = async(req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const userDocument = await User.findOne({ email });
 
-    if (!user) return res.status(401).json({ message: 'Invalid email or password' });
+    if (!userDocument) return res.status(401).json({ message: 'Invalid email or password' });
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const { password: savedPass, ...user } = userDocument.toObject();
+
+    const passwordMatch = await bcrypt.compare(password, savedPass);
 
     if (!passwordMatch) return res.status(401).json({ message: 'Invalid email or password' });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || 'secret_key', {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET || 'secret_key',
+      { expiresIn: '1h' }
+    );
+
+    // const refreshToken = jwt.sign(
+    //   { userId: user._id },
+    //   process.env.JWT_SECRET || 'secret_key',
+    //   { expiresIn: '1d' }
+    // );
 
     res.cookie('token', token, { httpOnly: true });
 
-    return res.status(200).json({ message: 'Login successful' });
+    return res.status(200).json({
+      message: 'Login successful',
+      data: user,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
-export const getCurrentUser = async(req: IAuthenticateRequest, res: Response) => {
+export const getCurrentUser = async(req: IProtectedRequest, res: Response) => {
   try {
     const currentUser = await User.findById(req.userId);
 
@@ -70,7 +83,7 @@ export const getCurrentUser = async(req: IAuthenticateRequest, res: Response) =>
   }
 };
 
-export const logout = async(req: IAuthenticateRequest, res: Response) => {
+export const logout = async(req: IProtectedRequest, res: Response) => {
   try {
     res.cookie('token', '', { httpOnly: true, expires: new Date(0) });
 
@@ -81,13 +94,15 @@ export const logout = async(req: IAuthenticateRequest, res: Response) => {
   }
 };
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: IProtectedRequest, res: Response) => {
   try {
-    const { _id, ...updateFields } = req.body;
+    if (req.userId) return res.status(400).json({ message: 'Missing user ID' });
 
-    if (!_id) return res.status(400).json({ message: 'Missing user ID' });
-
-    const data = await User.findOneAndUpdate({ _id }, updateFields, { new: true });
+    const data = await User.findOneAndUpdate(
+      { _id: req.userId },
+      req.body,
+      { new: true }
+    );
 
     if (!data) return res.status(404).json({ message: 'User not found' });
 

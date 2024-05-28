@@ -1,34 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect } from "react";
+
 import DirectItem from "./DirectItem";
+import { getAllConversations, selectConversations } from "@/entities/conversations";
+import { useAppDispatch, useAppSelector } from "@/shared/store";
 
-const DATA = [
-  {
-    name: 'John',
-    message: 'Hey!',
-  },
-  {
-    name: 'Mary',
-    message: 'Hello!',
-  },
-  {
-    name: 'Alisa',
-    message: 'Great! Thanks',
-  },
-  {
-    name: 'Albert',
-    message: 'Hi there',
-  },
-];
+const DirectsList: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { data } = useAppSelector(selectConversations);
 
-const DirectsList = () => {
+  useEffect(() => {
+    dispatch(getAllConversations());
+  }, [dispatch])
+
   return (
     <ul className="w-full">
       {
-        DATA.map(({ name, message }: any) =>
+        data?.list.map((conv: any) =>
           <DirectItem
-            key={name}
-            name={name}
-            message={message}
+            key={conv.id}
+            id={conv.id}
+            name={conv.user.userName}
+            message={conv.lastMessage?.message}
+            time={conv.lastMessage?.createdAt}
           />
         )
       }

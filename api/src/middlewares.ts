@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { IProtectedRequest } from './type';
 
-export interface IAuthenticateRequest extends Request {
-  userId?: string;
-}
-
-export const verifyToken = (req: IAuthenticateRequest, res: Response, next: NextFunction) => {
+export const verifyToken = (req: IProtectedRequest, res: Response, next: NextFunction) => {
   const token = req.cookies.token;
 
   if (!token) return res.status(401).json({ message: 'Unauthorized' });
