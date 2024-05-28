@@ -17,9 +17,9 @@ export const Settings = () => {
   const { data } = useAppSelector(selectMe);
   const dispatch = useAppDispatch();
 
-  const onSubmit: SubmitHandler<ISettingsForm> = async (updated) => {
+  const onSubmit: SubmitHandler<ISettingsForm> = async (data) => {
     try {
-      await dispatch(updateMe({ _id: data._id, ...updated }));
+      await dispatch(updateMe(data));
       toast('Updated!');
     } catch (error) {
       console.log(error);

@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { api } from '../../../shared/api'
+import { useAppDispatch } from '@/shared/store';
+import { logout } from '@/entities/me';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleLogout = () => {
-    api.post('/user/logout')
-      .then(() => navigate('/login'))
-      .catch((err) => console.log(err));
+    dispatch(logout())
+      .then(() => navigate('/login'));
   };
 
   return (
