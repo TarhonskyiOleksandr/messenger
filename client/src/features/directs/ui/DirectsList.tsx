@@ -14,7 +14,7 @@ const DirectsList: React.FC = () => {
   }, [dispatch])
 
   return (
-    <ul className="w-full">
+    <ul className="min-w-full">
       {
         data?.list.map((conv: any) =>
           <DirectItem

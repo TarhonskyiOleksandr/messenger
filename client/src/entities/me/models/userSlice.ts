@@ -29,7 +29,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchMe.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.data = payload;
+        state.data = payload.user;
       })
       .addCase(updateMe.fulfilled, (state, { payload }) => {
         state.loading = false;

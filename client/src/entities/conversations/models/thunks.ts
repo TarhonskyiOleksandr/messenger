@@ -11,7 +11,7 @@ interface ISendMessagePayload {
 
 export const sendMessage = createAsyncThunk(
   'conversations/send-message',
-  async ({ receiverId, message }: ISendMessagePayload, { rejectWithValue } ) => {
+  async ({ receiverId, message }: ISendMessagePayload, { rejectWithValue }) => {
   try {
     const res = await api.post(`/messages/send/${receiverId}`, { message });
     return res.data;
@@ -23,7 +23,7 @@ export const sendMessage = createAsyncThunk(
 
 export const getAllConversations = createAsyncThunk(
   'conversations/all',
-  async (_, { rejectWithValue } ) => {
+  async (_, { rejectWithValue }) => {
   try {
     const res = await api.get('/conversations/all');
     return res.data;

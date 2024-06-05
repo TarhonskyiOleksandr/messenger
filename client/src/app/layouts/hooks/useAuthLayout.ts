@@ -9,6 +9,6 @@ export const useAuthLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!Object.keys(data).length) return navigate('/');
+    // if (!Object.keys(data).length) return navigate('/');
   }, [data, navigate])
 };
