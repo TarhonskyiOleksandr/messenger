@@ -27,5 +27,7 @@ export const useHomeLayout = () => {
     }
   }, [data, dispatch]);
 
-  if (error?.status === 401) navigate('/login');
+  useEffect(() => {
+    if (error?.status === 401) navigate('/login');
+  }, [error?.status, navigate]);
 };

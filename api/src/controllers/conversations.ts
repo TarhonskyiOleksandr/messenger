@@ -5,7 +5,6 @@ import Conversation from '../db/models/Conversation';
 import User from '../db/models/User';
 import Message from '../db/models/Message';
 
-
 export const getConversations = async(req: IProtectedRequest, res: Response) => {
   try {
     const conversations = await Conversation.find(
@@ -65,7 +64,7 @@ export const getConversation = async(req: IProtectedRequest, res: Response) => {
       messages: conversation?.messages,
     };
 
-    res.status(201).json(response);
+    res.status(200).json(response);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });

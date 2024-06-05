@@ -5,7 +5,7 @@ import {
   login,
   getCurrentUser,
   logout,
-  updateUser
+  updateUser,
 } from '../controllers/users';
 import { verifyToken } from '../middlewares';
 
