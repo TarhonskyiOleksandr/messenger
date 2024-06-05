@@ -17,7 +17,7 @@ export const login = createAsyncThunk(
   },
 );
 
-export const logout = createAsyncThunk('me/logout', async (_,{ rejectWithValue }) => {
+export const logout = createAsyncThunk('me/logout', async (_, { rejectWithValue }) => {
   try {
     await api.post('/user/logout');
   } catch (err) {
@@ -26,7 +26,7 @@ export const logout = createAsyncThunk('me/logout', async (_,{ rejectWithValue }
   }
 });
 
-export const fetchMe = createAsyncThunk('me/get', async (_,{ rejectWithValue }) =>
+export const fetchMe = createAsyncThunk('me/get', async (_, { rejectWithValue }) =>
   {
     try {
       const res = await api.get('/user/me');

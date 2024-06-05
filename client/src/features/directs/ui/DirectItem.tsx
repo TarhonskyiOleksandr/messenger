@@ -14,15 +14,17 @@ const DirectItem: React.FC<IDirectProps> = ({ name, message, id }) => {
 
   return (
     <li
-      className="w-full flex items-center py-3 px-5 bg-transparent hover:bg-slate-500 rounded-lg cursor-pointer"
+      className="relative flex flex-auto w-full items-center py-3 px-5 bg-transparent hover:bg-slate-500 rounded-lg cursor-pointer"
       onClick={() => navigate(`/directs/${id}`)}
     >
+      <div className="absolute">
       <UserAvatar name={name} />
-      <div className="flex flex-col justify-between ml-2">
+      </div>
+      <div className="flex flex-col justify-between pl-11 overflow-hidden">
         <p className="text-white font-medium text-lg">
           {name}
         </p>
-        <p className="text-gray-300">
+        <p className=" text-gray-300 truncate">
           {message}
         </p>
       </div>
