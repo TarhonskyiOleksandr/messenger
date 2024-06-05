@@ -2,7 +2,6 @@ import { Response } from 'express';
 
 import { IProtectedRequest } from '../type';
 import Conversation from '../db/models/Conversation';
-import { ObjectId } from 'mongoose';
 import User from '../db/models/User';
 import Message from '../db/models/Message';
 
@@ -46,6 +45,13 @@ export const getConversation = async(req: IProtectedRequest, res: Response) => {
       _id: req.params.id
     })
     .populate({
+      path: 'participants',
+      match: { _id: { $ne: req.userId }},
+      options: { limit: 1 },
+      select: '_id',
+      model: User
+    })
+    .populate({
       path: 'messages',
       select: ['message', 'createdAt', 'senderId'],
       model: Message
@@ -53,7 +59,13 @@ export const getConversation = async(req: IProtectedRequest, res: Response) => {
 
     if (!conversation) res.status(404).json('Not Found!');
 
-    res.status(201).json(conversation);
+    const response = {
+      id: conversation?._id,
+      reciever: conversation?.participants[0],
+      messages: conversation?.messages,
+    };
+
+    res.status(201).json(response);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });

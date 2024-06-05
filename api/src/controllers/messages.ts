@@ -3,6 +3,8 @@ import { Response } from 'express';
 import Conversation from '../db/models/Conversation'
 import Message from "../db/models/Message";
 import { IProtectedRequest } from '../type';
+import { client } from '../redis';
+import { io } from '../websocket';
 
 export const sendMessage = async(req: IProtectedRequest, res: Response) => {
   try {
@@ -29,6 +31,10 @@ export const sendMessage = async(req: IProtectedRequest, res: Response) => {
     if (newMessage) conversation.messages.push(newMessage._id);
 
     await Promise.all([conversation.save(), newMessage.save()]);
+
+    const receiverSocketId = await client.get(receiverId);
+
+		if (receiverSocketId) io.to(receiverSocketId).emit('message', newMessage);
 
     res.status(201).json(newMessage);
   } catch (error) {
