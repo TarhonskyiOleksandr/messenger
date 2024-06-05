@@ -31,7 +31,7 @@ export const Conversation = () => {
 
   const formatTime = (value: string) => {
     const date: Date = new Date(value);
-    return `${date.getHours()}:${date.getMinutes()}`;
+    return `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
   };
 
   if (loading) return null;
