@@ -1,20 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import DirectItem from "./DirectItem";
+import { DirectItem } from "@/shared/ui";
 import { getAllConversations, selectConversations } from "@/entities/conversations";
 import { useAppDispatch, useAppSelector } from "@/shared/store";
 
-const DirectsList: React.FC = () => {
+interface IDirects {
+  isSearch?: boolean;
+}
+
+const DirectsList: React.FC<IDirects> = ({ isSearch }) => {
   const dispatch = useAppDispatch();
   const { data } = useAppSelector(selectConversations);
+  const { id }= useParams();
 
   useEffect(() => {
     dispatch(getAllConversations());
   }, [dispatch])
 
   return (
-    <ul className="min-w-full">
+    <ul className={`min-w-full ${isSearch ? 'hidden' : 'block'}`}>
       {
         data?.list.map((conv: any) =>
           <DirectItem
@@ -23,6 +29,7 @@ const DirectsList: React.FC = () => {
             name={conv.user.userName}
             message={conv.lastMessage?.message}
             time={conv.lastMessage?.createdAt}
+            isActive={id === conv.id}
           />
         )
       }

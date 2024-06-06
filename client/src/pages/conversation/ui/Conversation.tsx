@@ -34,15 +34,13 @@ export const Conversation = () => {
     return `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
   };
 
-  if (loading) return null;
-
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       <div
-        className="h-[calc(100vh-76px-76px)] overflow-auto"
+        className="flex flex-col-reverse flex-grow overflow-auto max-h-[calc(100vh-76px-76px)]"
         ref={listRef}
       >
-        <ul className="flex flex-col justify-end gap-2 py-5 px-24">
+        <ul className="relative bottom-0 space-y-5 px-6 py-4">
           {
             data.item?.messages?.map((item: any) =>
               <li
@@ -63,7 +61,7 @@ export const Conversation = () => {
           }
         </ul>
       </div>
-      <SendMessageBar receiverId={data.item?.reciever?._id} />
+      <SendMessageBar receiverId={data.item?.reciever?._id || id} />
     </div>
   );
 };

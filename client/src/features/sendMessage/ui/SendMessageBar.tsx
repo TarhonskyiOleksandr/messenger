@@ -1,4 +1,6 @@
 import { useState, ChangeEvent, FormEvent, FC } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Send } from "iconsax-react";
 
 import { sendMessage } from "@/entities/conversations";
 import { useAppDispatch } from "@/shared/store";
@@ -6,12 +8,16 @@ import { useAppDispatch } from "@/shared/store";
 const SendMessageBar: FC<{ receiverId: string }> = ({ receiverId='' }) => {
   const dispatch = useAppDispatch();
   const [message, setMessage] = useState('');
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  const handleSendMessage = (e: FormEvent) => {
+  const handleSendMessage = async(e: FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
-      dispatch(sendMessage({ message, receiverId }));
+      const { payload } = await dispatch(sendMessage({ message, receiverId }));
       setMessage('');
+      console.log(payload)
+      if (receiverId === id) navigate(`/directs/${payload.conversationId}`);
     }
   };
 
@@ -26,10 +32,14 @@ const SendMessageBar: FC<{ receiverId: string }> = ({ receiverId='' }) => {
           value={message}
         />
         <button
-          className="btn btn-primary ml-2"
+          className="btn btn-primary ml-2 rounded-full p-2"
           type="submit"
         >
-          Send
+          <Send
+            size="24"
+            color="#FFF"
+            className="ml-1"
+          />
         </button>
       </form>
     </div>

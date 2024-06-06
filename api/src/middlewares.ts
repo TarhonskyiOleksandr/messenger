@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { refreshToken } from './controllers/users';
+import { refreshToken } from './controllers/auth';
 import { IProtectedRequest } from './type';
 
 export const verifyToken = (req: IProtectedRequest, res: Response, next: NextFunction) => {

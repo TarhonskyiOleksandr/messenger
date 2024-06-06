@@ -56,7 +56,19 @@ export const getConversation = async(req: IProtectedRequest, res: Response) => {
       model: Message
     });
 
-    if (!conversation) res.status(404).json('Not Found!');
+    if (!conversation) {
+      const user = await User.findOne({ _id: req.params.id }).select('userName');
+
+      if (!user) return res.status(404).json({ message: 'Not found' });
+
+      const response = {
+        id: user?._id,
+        reciever: user?._id,
+        messages: [],
+      }
+
+      return res.status(200).json(response);
+    };
 
     const response = {
       id: conversation?._id,
