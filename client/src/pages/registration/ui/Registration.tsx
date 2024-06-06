@@ -19,7 +19,7 @@ export const Registration: React.FC = () => {
   const onSubmit: SubmitHandler<IRegisterForm> = async (data) => {
     try {
       const { confirmPassword, agreeTerms, ...reqBody } = data;
-      await api.post('/user/register', reqBody);
+      await api.post('/auth/register', reqBody);
       navigate('/login');
     } catch (error) {
       console.log(error);

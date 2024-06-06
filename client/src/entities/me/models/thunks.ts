@@ -8,7 +8,7 @@ export const login = createAsyncThunk(
   'me/login',
   async (data: any, { rejectWithValue }) => {
     try {
-      const res = await api.post('/user/login', data);
+      const res = await api.post('/auth/login', data);
       return res.data;
     } catch (err) {
       const error = err as AxiosError;
@@ -19,7 +19,7 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk('me/logout', async (_, { rejectWithValue }) => {
   try {
-    await api.post('/user/logout');
+    await api.post('/auth/logout');
   } catch (err) {
     const error = err as AxiosError;
     return rejectWithValue(error?.response);
@@ -29,7 +29,7 @@ export const logout = createAsyncThunk('me/logout', async (_, { rejectWithValue 
 export const fetchMe = createAsyncThunk('me/get', async (_, { rejectWithValue }) =>
   {
     try {
-      const res = await api.get('/user/me');
+      const res = await api.get('/users/me');
       return res.data;
     } catch (err) {
       const error = err as AxiosError;
@@ -48,7 +48,7 @@ export const updateMe = createAsyncThunk(
   'me/patch',
   async (data: any, { rejectWithValue }) => {
     try {
-      const res = await api.patch('/user/me/update', data);
+      const res = await api.patch('/users/me/update', data);
       return res.data;
     } catch (err) {
       const error = err as AxiosError;

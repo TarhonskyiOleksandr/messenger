@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { fetchMe, selectMe } from "@/entities/me";
@@ -13,11 +13,11 @@ export const useHomeLayout = () => {
   const dispatch = useAppDispatch();
   const { error, data } = useAppSelector(selectMe);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(fetchMe());
   }, [navigate, dispatch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (data._id) {
       dispatch(connectWs(data._id));
 
