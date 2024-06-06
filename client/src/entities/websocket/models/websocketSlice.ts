@@ -2,6 +2,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { io } from 'socket.io-client';
 
+import newMessageSound from '@/shared/assets/audio/new_message.wav';
+
 const initialState: any = {
   ws: null,
   usersOnline: [],
@@ -16,6 +18,8 @@ export const connectWs = createAsyncThunk('websocket/connect', async (payload: a
     });
     ws.on('message', (message: any) => {
       dispatch({ type: 'conversations/send-message/fulfilled', payload: message });
+      const audio = new Audio(newMessageSound);
+      audio.play();
     })
     return ws;
   } catch (err) {
