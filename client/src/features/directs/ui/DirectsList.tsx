@@ -20,7 +20,7 @@ const DirectsList: React.FC<IDirects> = ({ isSearch }) => {
   }, [dispatch])
 
   return (
-    <ul className={`min-w-full ${isSearch ? 'hidden' : 'block'}`}>
+    <ul className={`flex flex-col gap-2 min-w-full ${isSearch ? 'hidden' : 'block'}`}>
       {
         data?.list.map((conv: any) =>
           <DirectItem
