@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 export const Conversation = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { data, loading } = useAppSelector(selectConversations);
+  const { data } = useAppSelector(selectConversations);
   const { data: me } = useAppSelector(selectMe);
   const lastMessage = useAppSelector(selectLastMessage);
   const lastMessageRef = useRef<HTMLLIElement>(null);
@@ -40,7 +40,7 @@ export const Conversation = () => {
         className="flex flex-col-reverse flex-grow overflow-auto max-h-[calc(100vh-76px-76px)]"
         ref={listRef}
       >
-        <ul className="relative bottom-0 space-y-5 px-6 py-4">
+        <ul className="relative bottom-0 space-y-5 px-24 py-4">
           {
             data.item?.messages?.map((item: any) =>
               <li

@@ -38,10 +38,10 @@ const SearchBar: FC<ISearchBar> = ({ onSetSearch, isSearch }) => {
   }, [query, dispatch]);
 
   return (
-    <div className="py-4 flex relative">
+    <div className="mb-4 flex relative">
       <button
         onClick={handleGoBack}
-        className={`p-0 absolute top-1/2 transform -translate-y-1/2 ${isSearch ? 'block' : 'hidden'}`}
+        className={`h-fit absolute top-1/2 -translate-y-1/2 inset-y-0 p-0 ${isSearch ? 'block' : 'hidden'}`}
       >
         <ArrowLeft
           size="24"
