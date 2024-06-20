@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast/headless";
+import { ProfileTick } from "iconsax-react";
 
 import { selectMe, updateMe } from "@/entities/me";
 import { UserAvatar } from "@/shared/ui";
@@ -20,7 +21,15 @@ export const Settings = () => {
   const onSubmit: SubmitHandler<ISettingsForm> = async (data) => {
     try {
       await dispatch(updateMe(data));
-      toast('Updated!');
+      toast(
+        'Updated!',
+        { icon:
+            <ProfileTick
+              size="24"
+              color="rgb(74 222 128)"
+            />
+        }
+      );
     } catch (error) {
       console.log(error);
     }

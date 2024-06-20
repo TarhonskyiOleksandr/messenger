@@ -45,7 +45,7 @@ export const websocketSlice = createSlice({
     },
     removeUser: (state, { payload: { userId, sub } }) => {
       delete state.usersOnline[userId];
-      state.ws.emit('user:remove_sub', { userId, sub });
+      state.ws?.emit('user:remove_sub', { userId, sub });
     },
   },
   extraReducers: (builder) => {

@@ -3,7 +3,6 @@ import { Response } from 'express';
 import Conversation from '../db/models/Conversation'
 import Message from "../db/models/Message";
 import { IProtectedRequest } from '../type';
-// import { client } from '../redis';
 import { io } from '../websocket';
 
 import { usersOnline } from '../websocket/server';

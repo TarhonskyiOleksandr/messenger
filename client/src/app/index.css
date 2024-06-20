@@ -37,6 +37,10 @@ textarea:focus-visible {
   .validation-error {
     @apply text-red-500 text-xs font-semibold mt-1;
   }
+
+  .notification {
+    @apply rounded-md p-6 from-violet-500;
+  }
 }
 
 .mobile-menu {
