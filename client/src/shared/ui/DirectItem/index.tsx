@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useOnline } from "@/shared/hooks";
 import { UserAvatar } from "@/shared/ui";
 import { useNavigate } from "react-router-dom";
 
@@ -6,12 +7,14 @@ interface IDirectProps {
   name: string;
   message?: string;
   time?: string;
-  isActive?: boolean;
   id: string;
+  isActive?: boolean;
+  userId?: string;
 }
 
-const DirectItem: React.FC<IDirectProps> = ({ name, message, id, isActive }) => {
+const DirectItem: React.FC<IDirectProps> = ({ name, message, id, isActive, userId='' }) => {
   const navigate = useNavigate();
+  const isOnline = useOnline(userId);
 
   return (
     <li
@@ -19,7 +22,10 @@ const DirectItem: React.FC<IDirectProps> = ({ name, message, id, isActive }) => 
       onClick={() => navigate(`/directs/${id}`)}
     >
       <div className="absolute">
-      <UserAvatar name={name} />
+      <UserAvatar
+        name={name}
+        isOnline={isOnline}
+      />
       </div>
       <div className="flex flex-col justify-between pl-11 overflow-hidden">
         <p className="text-white font-medium text-lg">
