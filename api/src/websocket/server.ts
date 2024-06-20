@@ -2,9 +2,17 @@ import express, { Express } from 'express';
 import http from 'http';
 import { Server, Socket } from "socket.io";
 
-import { client } from '../redis';
+interface IOnlineStorage {
+  [key: string]: string;
+}
+
+interface IUserSubs {
+  [key: string]: Set<string>;
+}
 
 const app: Express = express();
+export const usersOnline: IOnlineStorage = {};
+export const userSubs: IUserSubs = {};
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -13,19 +21,33 @@ const io = new Server(server, {
 	},
 });
 
-const disconnect = async(id: string) => {
-  await client.del(id);
-  const res = await client.keys('*');
-  io.emit('user:get_users_online', res);
+const disconnect = async(id: string, socket: Socket) => {
+  userSubs[id]?.forEach((sub) => {
+    if (usersOnline[sub]) {
+      socket.to(usersOnline[sub]).emit('user:update_status', { [id]: 'offline' });
+    }
+  });
+  delete usersOnline[id];
+  delete userSubs[id];
+  // io.emit('user:update_status', { [id]: 'offline' });
 };
 
 const onConnection = async(socket: Socket) => {
   const id = socket.handshake.query.userId as string;
   if (!id) return;
-  await client.set(id, socket.id);
-  const res = await client.keys('*');
-  io.emit('user:get_users_online', res);
-  socket.on('disconnect', () => disconnect(id));
+  usersOnline[id] = socket.id;
+  userSubs[id] = userSubs[id] || new Set();
+  io.emit('user:update_status', { [id]: 'online' });
+
+  socket.on('user:check_status', ({ userId, sub }) => {
+    const isSubscribed = userSubs[userId]?.has(sub);
+    if (!isSubscribed) userSubs[userId]?.add(sub);
+    io.emit('user:update_status', { [sub]: usersOnline[sub] ? 'online' : 'offline' });
+  });
+
+  socket.on('user:remove_sub', ({ id, sub }) => userSubs[id].delete(sub));
+
+  socket.on('disconnect', () => disconnect(id, socket));
 };
 
 io.on('connection', onConnection);

@@ -6,7 +6,7 @@ import newMessageSound from '@/shared/assets/audio/new_message.wav';
 
 const initialState: any = {
   ws: null,
-  usersOnline: [],
+  usersOnline: {},
 };
 
 export const connectWs = createAsyncThunk('websocket/connect', async (payload: any, { dispatch, rejectWithValue }) => {
@@ -21,23 +21,32 @@ export const connectWs = createAsyncThunk('websocket/connect', async (payload: a
       const audio = new Audio(newMessageSound);
       audio.play();
     })
+
+    ws.on('user:update_status', (data) => dispatch(updateUsers(data)));
+
+    ws.on('users:remove', ({ id }) => dispatch(removeUser(id)));
+
     return ws;
   } catch (err) {
     return rejectWithValue(err);
   }
-})
+});
 
 export const websocketSlice = createSlice({
   name: 'websocket',
   initialState,
   reducers: {
     disconnect: (state) => {
-      state.ws?.close();
+      state.ws?.disconnect();
       state.ws = null;
     },
-    getUsersOnline: (state) => {
-      state.ws?.on('user:get_users_online', (data: any) => state.usersOnline === data);
-    }
+    updateUsers: (state, { payload }) => {
+      state.usersOnline = { ...state.usersOnline, ...payload };
+    },
+    removeUser: (state, { payload: { userId, sub } }) => {
+      delete state.usersOnline[userId];
+      state.ws.emit('user:remove_sub', { userId, sub });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(connectWs.fulfilled, (state, { payload }) => {
@@ -46,6 +55,6 @@ export const websocketSlice = createSlice({
   }
 });
 
-export const { disconnect, getUsersOnline } = websocketSlice.actions
+export const { disconnect, updateUsers, removeUser } = websocketSlice.actions;
 
 export default websocketSlice.reducer;

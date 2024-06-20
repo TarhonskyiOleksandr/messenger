@@ -17,7 +17,7 @@ const DirectsList: React.FC<IDirects> = ({ isSearch }) => {
 
   useEffect(() => {
     dispatch(getAllConversations());
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <ul className={`flex flex-col gap-2 min-w-full ${isSearch ? 'hidden' : 'block'}`}>
@@ -30,6 +30,7 @@ const DirectsList: React.FC<IDirects> = ({ isSearch }) => {
             message={conv.lastMessage?.message}
             time={conv.lastMessage?.createdAt}
             isActive={id === conv.id}
+            userId={conv.user?._id}
           />
         )
       }
