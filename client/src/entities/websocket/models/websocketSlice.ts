@@ -16,7 +16,7 @@ export const connectWs = createAsyncThunk('websocket/connect', async (payload: a
         userId: payload,
       },
     });
-    ws.on('message', (message: any) => {
+    ws.on('message:new', (message: any) => {
       dispatch({ type: 'conversations/send-message/fulfilled', payload: message });
       const audio = new Audio(newMessageSound);
       audio.play();
