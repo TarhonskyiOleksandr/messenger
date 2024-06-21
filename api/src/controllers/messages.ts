@@ -35,7 +35,7 @@ export const sendMessage = async(req: IProtectedRequest, res: Response) => {
 
     const receiverSocketId = usersOnline[receiverId];
 
-		if (receiverSocketId) io.to(receiverSocketId).emit('message', newMessage);
+		if (receiverSocketId) io.to(receiverSocketId).emit('message:new', newMessage);
 
     res.status(201).json(newMessage);
   } catch (error) {

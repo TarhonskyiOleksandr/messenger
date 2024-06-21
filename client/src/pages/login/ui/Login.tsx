@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -21,7 +22,9 @@ export const Login: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
-    dispatch(login(data)).then(() => navigate('/'));
+    dispatch(login(data)).then((res: any) => {
+      if (!res?.error) navigate('/');
+    });
   };
 
   return (

@@ -45,6 +45,12 @@ const onConnection = async(socket: Socket) => {
     io.emit('user:update_status', { [sub]: usersOnline[sub] ? 'online' : 'offline' });
   });
 
+  socket.on('message:typing', (data) => {
+    const receiver = usersOnline[data.id];
+    if (!receiver) return;
+    socket.to(receiver).emit('message:typing', data);
+  })
+
   socket.on('user:remove_sub', ({ id, sub }) => userSubs[id].delete(sub));
 
   socket.on('disconnect', () => disconnect(id, socket));
