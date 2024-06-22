@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import { selectConversations, selectLastMessage } from "@/entities/conversations";
 import { getConversation, readMessage } from "@/entities/conversations/models/thunks";
 import { selectMe } from "@/entities/me";
@@ -6,9 +9,6 @@ import { selectWS } from "@/entities/websocket";
 import { Message } from "@/features/Message";
 import { SendMessageBar } from "@/features/sendMessage";
 import { useAppDispatch, useAppSelector } from "@/shared/store";
-import { TypingDots } from "@/shared/ui";
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 
 export const Conversation = () => {
   const dispatch = useAppDispatch();
@@ -45,14 +45,14 @@ export const Conversation = () => {
 	}, [data.item?.messages, me, lastMessage]);
 
   useEffect(() => {
-    if (visibleMessages.size && data.item.reciever._id) {
+    if (visibleMessages.size && data.item.reciever?._id) {
       dispatch(readMessage({
         messages: [...visibleMessages],
         senderId: data.item.reciever._id,
         conversation: id,
       }))
     }
-  }, [visibleMessages, me, id, dispatch, data.item?.reciever?._id]);
+  }, [visibleMessages, me, id, dispatch, data.item.reciever?._id]);
 
   const handleVisibilityChange = (data: any, isVisible: boolean) => {
     setVisibleMessages(prevState => {
@@ -85,7 +85,6 @@ export const Conversation = () => {
               : null
           }
         </ul>
-        <TypingDots />
       </div>
       <SendMessageBar receiverId={data.item?.reciever?._id || id} />
     </div>
