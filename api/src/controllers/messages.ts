@@ -24,6 +24,7 @@ export const sendMessage = async(req: IProtectedRequest, res: Response) => {
 
     const newMessage = new Message({
 			senderId: req.userId,
+      isSeen: false,
       conversationId: conversation._id,
 			receiverId,
 			message,
@@ -44,12 +45,25 @@ export const sendMessage = async(req: IProtectedRequest, res: Response) => {
   }
 };
 
-// export const getMessages = async(req: IProtectedRequest, res: Response) => {
-//   try {
-//     const { id: conversationId } = req.params;
 
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// };
+export const readMessage = async(req: IProtectedRequest, res: Response) => {
+  const {
+    messages,
+    senderId,
+    conversation,
+  } = req.body;
+
+  try {
+    await Message.updateMany(
+      { _id: { $in: messages } },
+      { $set: { isSeen: true } }
+    );
+
+    const id = usersOnline[senderId];
+    if (id) io.to(id).emit('message:seen', { messages, conversation });
+
+    res.status(200).send({ messages, conversation });
+  } catch (error) {
+    res.status(500).send({ message: 'Failed to mark messages as seen', error });
+  }
+};

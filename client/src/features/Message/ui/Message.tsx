@@ -1,14 +1,23 @@
-import { FC } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FC, useEffect, useRef, useState } from "react";
 
-import { IMessage } from "@/app/type";
 import { TypingDots } from "@/shared/ui";
+import MessageSeen from '@/shared/assets/icons/messageSeen.svg?react';
 
 interface IMessageProps {
-  item?: IMessage;
+  item?: Message;
   myId?: string;
+  onVisibilityChange?: (item: any, isVisible: boolean) => void;
 }
 
-export const Message: FC<IMessageProps> = ({ item, myId }) => {
+export const Message: FC<IMessageProps> = ({ item, myId, onVisibilityChange }) => {
+  const messageRef = useRef(null);
+  const [isSeen, setIsSeen] = useState(item?.isSeen);
+
+  useEffect(() => {
+    setIsSeen(item?.isSeen)
+  }, [item?.isSeen]);
+
   const formatTime = (value: string) => {
     const date: Date = new Date(value);
     return `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
@@ -25,6 +34,26 @@ export const Message: FC<IMessageProps> = ({ item, myId }) => {
     return baseWrap;
   }
 
+  useEffect(() => {
+    if (item?._id && onVisibilityChange && !isSeen) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setIsSeen(true);
+          onVisibilityChange(item?._id, entry.isIntersecting);
+        },
+        { threshold: 0.1 }
+      );
+
+      if (messageRef.current) {
+        observer.observe(messageRef.current);
+      }
+      const ref = messageRef.current;
+      return () => {
+        if (ref) observer.unobserve(ref);
+      };
+    }
+  }, [item, onVisibilityChange, isSeen]);
+
   if (!item) return(
     <li className={getMessageStyles(true)}>
       <div className={getMessageStyles(false)}>
@@ -34,14 +63,24 @@ export const Message: FC<IMessageProps> = ({ item, myId }) => {
   );
 
   return (
-    <li className={getMessageStyles(true)}>
+    <li
+      className={getMessageStyles(true)}
+      ref={item?.senderId !== myId ? messageRef : null}
+    >
       <div className={getMessageStyles(false)}>
         <p className="text-gray-100 text-lg">
           {item?.message}
         </p>
-        <p className={`text-gray-400 text-xs flex justify-${item?.senderId === myId ? 'end' : 'start'}`}>
-          {formatTime(item?.createdAt || '')}
-        </p>
+        <div className="flex gap-2 items-center justify-end">
+          <p className={`text-gray-400 text-xs flex justify-${item?.senderId === myId ? 'end' : 'start'}`}>
+            {formatTime(item?.createdAt || '')}
+          </p>
+          {
+            item?.senderId === myId ?
+            <MessageSeen className={`message-icon ${item?.isSeen ? 'seen' : ''}`}/>
+            : null
+          }
+        </div>
       </div>
     </li>
   );

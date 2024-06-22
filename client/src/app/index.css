@@ -93,3 +93,12 @@ textarea:focus-visible {
     opacity: 0;
   }
 }
+
+.message-icon path {
+  stroke-width: 2px;
+  stroke: rgb(156 163 175);
+}
+
+.message-icon.seen path {
+  stroke: rgb(96 165 250);
+}

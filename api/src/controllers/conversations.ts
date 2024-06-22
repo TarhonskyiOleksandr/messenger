@@ -52,7 +52,7 @@ export const getConversation = async(req: IProtectedRequest, res: Response) => {
     })
     .populate({
       path: 'messages',
-      select: ['message', 'createdAt', 'senderId'],
+      select: ['message', 'createdAt', 'senderId', 'isSeen'],
       model: Message
     });
 
