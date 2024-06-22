@@ -16,6 +16,9 @@ const MessageShema = new Schema({
     ref: 'Conversation',
     required: true,
   },
+  isSeen: {
+    type: Boolean
+  },
   message: {
     type: String,
     required: true,

@@ -44,3 +44,15 @@ export const getConversation = createAsyncThunk(
     return rejectWithValue(error?.response?.statusText);
   }
 });
+
+export const readMessage = createAsyncThunk(
+  'conversations/read-message',
+  async (data: any, { rejectWithValue } ) => {
+  try {
+    const res = await api.put('/messages/read', data);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError;
+    return rejectWithValue(error?.response?.statusText);
+  }
+});

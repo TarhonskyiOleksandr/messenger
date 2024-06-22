@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   sendMessage,
   getAllConversations,
-  getConversation
+  getConversation,
+  readMessage
 } from './thunks';
 
 const initialState: any = {
@@ -38,6 +39,14 @@ export const conversationsSlice = createSlice({
           return conversation;
         });
         state.data.item.messages = [...state.data.item.messages, payload];
+      })
+      .addCase(readMessage.fulfilled, (state, { payload: { messages } }) => {
+        const conversationData = state.data.item;
+        conversationData.messages = conversationData.messages.map((message: any) => {
+          const isUpdated = messages.includes(message._id);
+          if (isUpdated) return { ...message, isSeen: true };
+          return message;
+        });
       })
       .addCase(getAllConversations.pending, (state) => {
         state.loading = true;

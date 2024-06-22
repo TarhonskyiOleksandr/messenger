@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { selectConversations, selectLastMessage } from "@/entities/conversations";
-import { getConversation } from "@/entities/conversations/models/thunks";
+import { getConversation, readMessage } from "@/entities/conversations/models/thunks";
 import { selectMe } from "@/entities/me";
 import { selectWS } from "@/entities/websocket";
 import { Message } from "@/features/Message";
@@ -19,10 +19,17 @@ export const Conversation = () => {
   const ws = useAppSelector(selectWS);
   const listRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
+  const [visibleMessages, setVisibleMessages] = useState(new Set());
 
   useEffect(() => {
-    if (ws) ws.on('message:typing', ({ isTyping }: { isTyping: boolean }) => setIsTyping(isTyping));
-  }, [ws])
+    if (ws) {
+      ws.on('message:typing', ({ isTyping }: { isTyping: boolean }) => setIsTyping(isTyping));
+      ws.on('message:seen', (payload: any) => {
+        if (id !== payload.conversation) return;
+        dispatch({ type: 'conversations/read-message/fulfilled', payload });
+      });
+    }
+  }, [ws, dispatch, data.item.messages, id])
 
   useEffect(() => {
     dispatch(getConversation(id as string));
@@ -37,6 +44,24 @@ export const Conversation = () => {
     }
 	}, [data.item?.messages, me, lastMessage]);
 
+  useEffect(() => {
+    if (visibleMessages.size && data.item.reciever._id) {
+      dispatch(readMessage({
+        messages: [...visibleMessages],
+        senderId: data.item.reciever._id,
+        conversation: id,
+      }))
+    }
+  }, [visibleMessages, me, id, dispatch, data.item?.reciever?._id]);
+
+  const handleVisibilityChange = (data: any, isVisible: boolean) => {
+    setVisibleMessages(prevState => {
+      const state = new Set(prevState);
+      isVisible ? state.add(data) : state.delete(data);
+      return state;
+    });
+  };
+
   return (
     <div className="flex flex-col h-full">
       <div
@@ -50,6 +75,7 @@ export const Conversation = () => {
                 key={item._id}
                 myId={me._id}
                 item={item}
+                onVisibilityChange={handleVisibilityChange}
               />
             )
           }
