@@ -33,7 +33,8 @@ jobs:
             cd api
             npm run build
 
-            pm2 restart index
+            pm2 delete index
+            pm2 start dist/src/index.js
 
             cd ../client
             yarn build
