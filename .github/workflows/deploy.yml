@@ -14,9 +14,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 20
-
-      export NVM_DIR=~/.nvm
-      source ~/.nvm/nvm.sh
       - run: npm i yarn -g
 
       - name: Deploy Messenger App
@@ -27,6 +24,9 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
 
           script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+
             cd /var/www/messenger
 
             git pull origin main
