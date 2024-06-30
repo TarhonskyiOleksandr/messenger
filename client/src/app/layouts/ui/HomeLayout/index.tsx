@@ -6,7 +6,9 @@ import Sidebar from './components/Sidebar';
 import { useHomeLayout } from '../../hooks';
 
 const HomeLayout: React.FC = () => {
-  useHomeLayout()
+  const { isLoading } = useHomeLayout();
+
+  if (isLoading) return null;
 
   return (
     <div>

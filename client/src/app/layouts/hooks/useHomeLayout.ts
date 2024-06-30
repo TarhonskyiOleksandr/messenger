@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useLayoutEffect, useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { fetchMe, selectMe } from "@/entities/me";
@@ -12,13 +12,13 @@ import {
 export const useHomeLayout = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { error, data } = useAppSelector(selectMe);
+  const { error, data, loading } = useAppSelector(selectMe);
 
-  useLayoutEffect(() => {
-    dispatch(fetchMe());
-  }, [navigate, dispatch]);
+  useEffect(() => {
+    if (!data._id) dispatch(fetchMe());
+  }, [navigate, dispatch, data]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (data._id) {
       dispatch(connectWs(data._id));
 
@@ -27,8 +27,10 @@ export const useHomeLayout = () => {
       };
     }
   }, [data, dispatch]);
-  console.log(error)
-  useEffect(() => {
-    if (error) navigate('/login');
-  }, [error, navigate]);
+
+  useLayoutEffect(() => {
+    if (error && !data._id) navigate('/login');
+  }, [error, navigate, data]);
+
+  return { isLoading: loading };
 };

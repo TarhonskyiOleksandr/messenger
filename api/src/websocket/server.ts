@@ -51,7 +51,7 @@ const onConnection = async(socket: Socket) => {
     socket.to(receiver).emit('message:typing', data);
   })
 
-  socket.on('user:remove_sub', ({ id, sub }) => userSubs[id].delete(sub));
+  socket.on('user:remove_sub', ({ id, sub }) => userSubs[id]?.delete(sub));
 
   socket.on('disconnect', () => disconnect(id, socket));
 };
