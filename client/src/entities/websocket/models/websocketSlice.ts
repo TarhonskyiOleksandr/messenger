@@ -37,7 +37,7 @@ export const websocketSlice = createSlice({
   initialState,
   reducers: {
     disconnect: (state) => {
-      state.ws?.close();
+      state.ws?.disconnect();
       state.ws = null;
     },
     updateUsers: (state, { payload }) => {

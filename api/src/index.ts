@@ -21,7 +21,7 @@ app.use(cors(corsConfig));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/api', router);
+app.use('/', router);
 
 app.get('/ping', (req: Request, res: Response) => {
   res.status(200).send({ message: 'Express + TypeScript Server' });
