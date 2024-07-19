@@ -11,7 +11,7 @@ const initialState: any = {
 
 export const connectWs = createAsyncThunk('websocket/connect', async (payload: any, { dispatch, rejectWithValue }) => {
   try {
-    const ws = io(import.meta.env.VITE_API_URL, {
+    const ws = io(import.meta.env.VITE_API_BASE, {
       query: {
         userId: payload,
       },
