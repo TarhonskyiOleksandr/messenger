@@ -19,6 +19,7 @@ const io = new Server(server, {
 	cors: {
 		origin: '*',
 	},
+  transports: ['websocket', 'polling'],
 });
 
 const disconnect = async(id: string, socket: Socket) => {

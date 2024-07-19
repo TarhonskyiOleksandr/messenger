@@ -15,6 +15,7 @@ export const connectWs = createAsyncThunk('websocket/connect', async (payload: a
       query: {
         userId: payload,
       },
+      transports: ['websocket', 'polling'],
     });
     ws.on('message:new', (message: any) => {
       dispatch({ type: 'conversations/send-message/fulfilled', payload: message });
