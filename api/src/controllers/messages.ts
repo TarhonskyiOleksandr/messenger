@@ -72,7 +72,10 @@ export const deleteMessage = async(req: IProtectedRequest, res: Response) => {
   const { id } = req.params;
   try {
     await Message.findByIdAndDelete(id);
-    res.status(200).json({ message: `message ${id} deleted`});
+    res.status(200).json({
+      message: `message ${id} deleted`,
+      id
+    });
   } catch (error) {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
