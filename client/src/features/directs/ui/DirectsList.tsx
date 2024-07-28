@@ -19,8 +19,6 @@ const DirectsList: React.FC<IDirects> = ({ isSearch }) => {
     dispatch(getAllConversations());
   }, [dispatch]);
 
-  console.log(data?.list)
-
   return (
     <ul className={`flex flex-col gap-2 min-w-full ${isSearch ? 'hidden' : 'block'}`}>
       {

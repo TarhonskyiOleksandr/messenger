@@ -5,7 +5,8 @@ import {
   sendMessage,
   getAllConversations,
   getConversation,
-  readMessage
+  readMessage,
+  deleteMessage
 } from './thunks';
 
 const initialState: any = {
@@ -47,6 +48,9 @@ export const conversationsSlice = createSlice({
           if (isUpdated) return { ...message, isSeen: true };
           return message;
         });
+      })
+      .addCase(deleteMessage.fulfilled, (state, { payload: { id } }) => {
+        state.data.item.messages = state.data.item?.messages.filter((item: any) => item._id !== id);
       })
       .addCase(getAllConversations.pending, (state) => {
         state.loading = true;

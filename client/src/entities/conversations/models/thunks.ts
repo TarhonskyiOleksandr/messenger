@@ -56,3 +56,15 @@ export const readMessage = createAsyncThunk(
     return rejectWithValue(error?.response?.statusText);
   }
 });
+
+export const deleteMessage = createAsyncThunk(
+  'messages/delete',
+  async (id: string, { rejectWithValue } ) => {
+  try {
+    const res = await api.delete(`/messages/delete/${id}`);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError;
+    return rejectWithValue(error?.response?.statusText);
+  }
+});
