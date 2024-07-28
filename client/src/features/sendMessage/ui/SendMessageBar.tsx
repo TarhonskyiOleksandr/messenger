@@ -53,7 +53,7 @@ const SendMessageBar: FC<{ receiverId: string }> = ({ receiverId='' }) => {
   };
 
   return (
-    <div className="bg-gray-900 px-24 py-4 min-w-full">
+    <div className="bg-gray-900 px-3 md:px-24 py-4 min-w-full">
       <form
         className="flex"
         onSubmit={handleSendMessage}

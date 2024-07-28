@@ -20,7 +20,7 @@ const UserAvatar: React.FC<Props> = ({ name, size, isOnline }) => {
   };
 
   return (
-    <div className={`flex relative justify-center items-center rounded-full bg-black ${getSizeClass()}`}>
+    <div className={`flex relative justify-center items-center rounded-full bg-black py-2 lg:py-0 ${getSizeClass()}`}>
       <p className="text-white uppercase">
         {name?.charAt(0)}
       </p>
