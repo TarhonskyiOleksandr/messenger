@@ -29,7 +29,7 @@ export const Message: FC<IMessageProps> = ({ item, myId, onVisibilityChange }) =
 
   const getMessageStyles = (isWrapper: boolean) => {
     const baseWrap = 'transition-height flex h-fit w-full';
-    const baseContent = 'pr-6 pl-4 py-3 rounded-3xl h-fit w-fit';
+    const baseContent = 'pr-4 pl-3 py-2 md:pr-6 md:pl-4 md:py-3 rounded-2xl md:rounded-3xl h-fit w-fit';
     const isMyMessage = item?.senderId === myId;
     if ((!isWrapper && !item) || (!isWrapper && !isMyMessage)) return baseContent + ' bg-slate-600';
     if (!isWrapper && isMyMessage) return baseContent + ' bg-blue-600';
@@ -72,7 +72,7 @@ export const Message: FC<IMessageProps> = ({ item, myId, onVisibilityChange }) =
       ref={item?.senderId !== myId ? messageRef : null}
     >
       <div className={getMessageStyles(false)}>
-        <p className="text-gray-100 text-lg pl-1">
+        <p className="text-gray-100 text-sm md:text-lg">
           {item?.message}
         </p>
         <div className={`flex group items-center ${item?.senderId === myId ? 'justify-between' : 'justify-end'}`}>

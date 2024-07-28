@@ -63,12 +63,12 @@ export const Conversation = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col w-full">
       <div
         className="flex flex-col-reverse flex-grow overflow-auto max-h-[calc(100vh-76px-76px)]"
         ref={listRef}
       >
-        <ul className="relative bottom-0 space-y-2 px-24 py-4">
+        <ul className="relative bottom-0 space-y-2 px-4 lg:px-24 py-4">
           {
             data.item?.messages?.map((item: any) =>
               <Message

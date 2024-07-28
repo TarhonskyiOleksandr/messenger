@@ -8,9 +8,11 @@ import { useAppDispatch, useAppSelector } from "@/shared/store";
 
 interface IDirects {
   isSearch?: boolean;
+  isExpanded: boolean;
+  setIsExpanded: (value: boolean) => void;
 }
 
-const DirectsList: React.FC<IDirects> = ({ isSearch }) => {
+const DirectsList: React.FC<IDirects> = ({ isSearch, isExpanded, setIsExpanded }) => {
   const dispatch = useAppDispatch();
   const { data } = useAppSelector(selectConversations);
   const { id }= useParams();
@@ -31,6 +33,8 @@ const DirectsList: React.FC<IDirects> = ({ isSearch }) => {
             time={conv.lastMessage?.createdAt}
             isActive={id === conv.id}
             userId={conv.user?._id}
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
           />
         )
       }
