@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useEffect, useRef, useState } from "react";
+import { Trash } from "iconsax-react";
 
 import { TypingDots } from "@/shared/ui";
 import MessageSeen from '@/shared/assets/icons/messageSeen.svg?react';
+import { useAppDispatch } from "@/shared/store";
+import { deleteMessage } from "@/entities/conversations";
 
 interface IMessageProps {
   item?: Message;
@@ -13,6 +16,7 @@ interface IMessageProps {
 export const Message: FC<IMessageProps> = ({ item, myId, onVisibilityChange }) => {
   const messageRef = useRef(null);
   const [isSeen, setIsSeen] = useState(item?.isSeen);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsSeen(item?.isSeen)
@@ -25,7 +29,7 @@ export const Message: FC<IMessageProps> = ({ item, myId, onVisibilityChange }) =
 
   const getMessageStyles = (isWrapper: boolean) => {
     const baseWrap = 'transition-height flex h-fit w-full';
-    const baseContent = 'px-6 py-3 rounded-3xl h-fit w-fit';
+    const baseContent = 'pr-6 pl-4 py-3 rounded-3xl h-fit w-fit';
     const isMyMessage = item?.senderId === myId;
     if ((!isWrapper && !item) || (!isWrapper && !isMyMessage)) return baseContent + ' bg-slate-600';
     if (!isWrapper && isMyMessage) return baseContent + ' bg-blue-600';
@@ -68,18 +72,33 @@ export const Message: FC<IMessageProps> = ({ item, myId, onVisibilityChange }) =
       ref={item?.senderId !== myId ? messageRef : null}
     >
       <div className={getMessageStyles(false)}>
-        <p className="text-gray-100 text-lg">
+        <p className="text-gray-100 text-lg pl-1">
           {item?.message}
         </p>
-        <div className="flex gap-2 items-center justify-end">
-          <p className={`text-gray-400 text-xs flex justify-${item?.senderId === myId ? 'end' : 'start'}`}>
-            {formatTime(item?.createdAt || '')}
-          </p>
+        <div className={`flex group items-center ${item?.senderId === myId ? 'justify-between' : 'justify-end'}`}>
           {
             item?.senderId === myId ?
-            <MessageSeen className={`message-icon ${item?.isSeen ? 'seen' : ''}`}/>
-            : null
+            <button
+              className="p-0 group-hover:visible invisible mr-1"
+              onClick={() => dispatch(deleteMessage(item._id))}
+              title="Delete message"
+            >
+              <Trash
+                size="16"
+                color="#FF8A65"
+              />
+            </button> : null
           }
+          <div className="flex gap-2 items-center">
+            <p className={`text-gray-400 text-xs flex justify-${item?.senderId === myId ? 'end' : 'start'}`}>
+              {formatTime(item?.createdAt || '')}
+            </p>
+            {
+              item?.senderId === myId ?
+              <MessageSeen className={`message-icon ${item?.isSeen ? 'seen' : ''}`}/>
+              : null
+            }
+          </div>
         </div>
       </div>
     </li>

@@ -67,3 +67,13 @@ export const readMessage = async(req: IProtectedRequest, res: Response) => {
     res.status(500).send({ message: 'Failed to mark messages as seen', error });
   }
 };
+
+export const deleteMessage = async(req: IProtectedRequest, res: Response) => {
+  const { id } = req.params;
+  try {
+    await Message.findByIdAndDelete(id);
+    res.status(200).json({ message: `message ${id} deleted`});
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
