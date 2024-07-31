@@ -10,8 +10,8 @@ interface IDirectProps {
   id: string;
   isActive?: boolean;
   userId?: string;
-  isExpanded: boolean;
-  setIsExpanded: (value: boolean) => void;
+  isExpanded?: boolean;
+  setIsExpanded?: (value: boolean) => void;
 }
 
 const DirectItem: React.FC<IDirectProps> = ({
@@ -31,7 +31,7 @@ const DirectItem: React.FC<IDirectProps> = ({
       className={`relative flex flex-auto w-full items-center py-3 px-5 hover:bg-slate-500 rounded-lg cursor-pointer transition-all ${isActive ? 'bg-slate-600' : 'bg-transparent'}`}
       onClick={() => {
         navigate(`/directs/${id}`);
-        setIsExpanded(false);
+        setIsExpanded?.(false);
       }}
     >
       <div className={`${isExpanded ? 'absolute' : 'xs:relative'} lg:absolute`}>
