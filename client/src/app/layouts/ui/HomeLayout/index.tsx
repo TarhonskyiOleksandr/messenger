@@ -14,7 +14,7 @@ const HomeLayout: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <main className={`grid h-[calc(100vh-76px)] md:grid-cols-[3fr_9fr] grid-cols-[${isExpanded? '1fr' : '3fr_9fr'}]`}>
+      <main className={`grid h-[calc(100vh-76px)] lg:grid-cols-[3fr_9fr] grid-cols-[${isExpanded? '1fr' : '3fr_9fr'}]`}>
         <Sidebar
           setIsExpanded={setIsExpanded}
           isExpanded={isExpanded}

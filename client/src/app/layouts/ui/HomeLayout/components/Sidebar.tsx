@@ -12,7 +12,7 @@ const Sidebar:
   const [isSearch, setIsSearch] = useState(false);
 
   return (
-    <aside className='flex pt-4 bg-gray-700 overflow-x-hidden'>
+    <aside className={`flex pt-4 bg-gray-700 overflow-x-hidden md:w-full ${isExpanded ? 'w-full' : 'w-[94px]'}`}>
       <div className="w-full px-3">
         <button
           className={`block ${isExpanded ? 'ml-auto' : 'mx-auto'} md:hidden mb-2`}
