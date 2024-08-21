@@ -33,13 +33,17 @@ export const conversationsSlice = createSlice({
       })
       .addCase(sendMessage.fulfilled, (state, { payload }) => {
         state.loading = false;
+        state.data.item.messages = [...state.data.item.messages, payload];
+        if (payload.conversation) {
+          state.data.list = [...state.data.list, payload.conversation];
+          return;
+        }
         state.data.list = state.data.list.map((conversation: any) => {
           if (conversation.id === payload.conversationId) {
             return { ...conversation, lastMessage: payload };
           }
           return conversation;
         });
-        state.data.item.messages = [...state.data.item.messages, payload];
       })
       .addCase(readMessage.fulfilled, (state, { payload: { messages } }) => {
         const conversationData = state.data.item;
