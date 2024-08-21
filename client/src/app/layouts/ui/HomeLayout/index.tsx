@@ -11,10 +11,15 @@ const HomeLayout: React.FC = () => {
 
   if (isLoading) return null;
 
+  const getColsClass = () => {
+    if (isExpanded) return 'grid-cols-[1fr]';
+    return 'grid-cols-[3fr_9fr]';
+  };
+
   return (
     <div>
       <Navbar />
-      <main className={`grid h-[calc(100vh-76px)] lg:grid-cols-[3fr_9fr] grid-cols-[${isExpanded? '1fr' : '3fr_9fr'}]`}>
+      <main className={`grid h-[calc(100vh-76px)] ${getColsClass()}`}>
         <Sidebar
           setIsExpanded={setIsExpanded}
           isExpanded={isExpanded}
