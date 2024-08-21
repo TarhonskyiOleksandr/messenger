@@ -57,8 +57,6 @@ export const sendMessage = async(req: IProtectedRequest, res: Response) => {
       }
     };
 
-    console.log(messageRes)
-
     if (newMessage) conversation.messages.push(newMessage._id);
 
     await Promise.all([conversation.save(), newMessage.save()]);
