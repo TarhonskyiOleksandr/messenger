@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import swaggerUI from 'swagger-ui-express';
+import swaggerSpec from '../swagger';
 
 import { app, server } from './websocket';
 import connectToDatabase from './db';
@@ -21,6 +23,7 @@ app.use(cors(corsConfig));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use('/api', router);
 
 app.get('/ping', (req: Request, res: Response) => {
